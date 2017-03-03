@@ -1,0 +1,6 @@
+@import "../meta/foo/uri.css";
+@import "../meta/bar/index.css";
+
+header {
+    width: 100%;
+}

@@ -1,0 +1,20 @@
+
+/* css-assets: "../input/test.css" */
+header {
+    width: 100%;
+}
+
+/* css-assets: "../meta/foo/uri.css" */
+body {
+    background-image: url("assets/assets/hey.png");
+}
+
+/* css-assets: "../meta/foo/another.css" */
+html {
+    width: 100%;
+}
+
+/* css-assets: "../meta/bar/index.css" */
+body {
+    background: #FFF url("assets/images/icon.png") no-repeat;
+}
