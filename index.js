@@ -114,6 +114,9 @@ function processImports(imports, cssDir, vendorDir) {
                     if (!path.isAbsolute(uriFile)) {
                         var copyFrom = path.resolve(base, uriFile);
 
+                        // Fix to exclude query parameters from file names.
+                        copyFrom = copyFrom.split('?')[0];
+
                         // Check if the resource actually exists.
                         if (fs.existsSync(copyFrom)) {
                             var flatUriPath = uriFile.replace(new RegExp(regexEscape('../'), 'g'), '').replace(new RegExp(regexEscape('./'), 'g'), '');
