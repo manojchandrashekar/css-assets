@@ -1,6 +1,6 @@
 {
   "name": "css-assets",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Helps build CSS files and referenced assets.",
   "main": "index.js",
   "scripts": {
