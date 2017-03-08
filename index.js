@@ -111,7 +111,7 @@ function processImports(imports, cssDir, vendorDir) {
                     }
 
                     var uriParts = [];
-                    var uriFilePath = '';
+                    var uriFilePath = uriFile;
                     var uriQuery = '';
 
                     // Fix to exclude query parameters from file names.

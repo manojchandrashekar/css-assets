@@ -1,12 +1,20 @@
 var assert = require('assert');
 var path = require('path');
 var fs = require('fs');
+var fse = require('fs-extra');
 var cssAssets = require('../');
 
 var cssDir = path.join(__dirname, 'data/output');
 var inputDir = path.join(__dirname, 'data/input');
 
 var vendorDir = path.join(__dirname, 'data/output/assets');
+
+fse.emptyDirSync(cssDir, (err) => {
+    if(err) {
+        console.log('Error emptying output directory');
+        process.exit();
+    }
+});
 
 var files = fs.readdirSync(inputDir).filter(function(file) {
     return /[.]css$/.test(file);
