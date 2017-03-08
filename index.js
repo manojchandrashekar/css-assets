@@ -110,21 +110,48 @@ function processImports(imports, cssDir, vendorDir) {
                         uriFile = './' + uriFile;
                     }
 
-                    // Leave absolute paths alone.
-                    if (!path.isAbsolute(uriFile)) {
-                        var copyFrom = path.resolve(base, uriFile);
+                    var uriParts = [];
+                    var uriFilePath = '';
+                    var uriQuery = '';
 
-                        // Fix to exclude query parameters from file names.
-                        copyFrom = copyFrom.split('?')[0];
+                    // Fix to exclude query parameters from file names.
+                    var uriContainsQ = uriFile.indexOf('?');
+                    var uriContainsH = uriFile.indexOf('#');
+
+                    // URI does contains either '?' or '#'
+                    if(uriContainsQ !== -1 || uriContainsH !== -1) {
+
+                        // Check if '?' occurs before '#'
+                        if(uriContainsQ > uriContainsH) {
+                            uriParts =  uriFile.split('?');
+                            uriFilePath = uriParts[0];
+
+                            if(uriParts.length > 1) {
+                                uriQuery = '?' + uriParts.slice(1, uriParts.length + 1).join('');
+                            }
+                        // '#' occurs before '?'
+                        } else {
+                            uriParts =  uriFile.split('#');
+                            uriFilePath = uriParts[0];
+
+                            if(uriParts.length > 1) {
+                                uriQuery = '#' + uriParts.slice(1, uriParts.length + 1).join('');
+                            }
+                        }
+                    }
+
+                    // Leave absolute paths alone.
+                    if (!path.isAbsolute(uriFilePath)) {
+                        var copyFrom = path.resolve(base, uriFilePath);
 
                         // Check if the resource actually exists.
                         if (fs.existsSync(copyFrom)) {
-                            var flatUriPath = uriFile.replace(new RegExp(regexEscape('../'), 'g'), '').replace(new RegExp(regexEscape('./'), 'g'), '');
+                            var flatUriPath = uriFilePath.replace(new RegExp(regexEscape('../'), 'g'), '').replace(new RegExp(regexEscape('./'), 'g'), '');
 
                             var copyTo = path.resolve(vendorDir, flatUriPath);
                             fse.copySync(copyFrom, copyTo);
 
-                            var relativeUriPath = path.relative(cssDir, vendorDir) + '/' + flatUriPath;
+                            var relativeUriPath = path.relative(cssDir, vendorDir) + '/' + flatUriPath + uriQuery;
                             self.parent.node[1][1] = '"' + relativeUriPath + '"';
                         } else {
                             console.warn("!!WARN!! [css-assets]: A referenced resource was not found! ['" + uriFile + "' in " + file + "]");

@@ -6,7 +6,7 @@ header {
 
 /* css-assets: "../meta/foo/uri.css" */
 body {
-    background-image: url("assets/assets/hey.png");
+    background-image: url("assets/assets/hey.png?ver=0.0.3");
 }
 
 /* css-assets: "../meta/foo/another.css" */
@@ -16,5 +16,5 @@ html {
 
 /* css-assets: "../meta/bar/index.css" */
 body {
-    background: #FFF url("assets/images/icon.png") no-repeat;
+    background: #FFF url("assets/images/icon.png#nocache") no-repeat;
 }

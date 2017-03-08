@@ -1,4 +1,4 @@
 @import 'another.css';
 body {
-    background-image: url('assets/hey.png');
+    background-image: url('assets/hey.png?ver=0.0.3');
 }
