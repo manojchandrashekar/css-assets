@@ -27,7 +27,7 @@ var test = function (file, fileIndex, callback) {
                 var cssFile = path.join(inputDir, file);
                 var actual = cssAssets(cssFile, cssDir, vendorDir);
 
-                var expected = 4;
+                var expected = 5;
                 assert.equal(actual, expected);
             });
         });

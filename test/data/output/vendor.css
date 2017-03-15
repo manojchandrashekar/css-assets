@@ -14,7 +14,29 @@ html {
     width: 100%;
 }
 
+.bkg {
+    background-image: url("./assets/assets/hey.png?ver=0.0.3#display-full");
+}
+
+.hash-only {
+    background-image: url("./assets/assets/hey.png#ver=0.0.3");
+}
+
 /* css-assets: "../meta/bar/index.css" */
 body {
     background: #FFF url("./assets/images/icon.png#nocache?ver=0.1") no-repeat;
+}
+
+/* css-assets: "../meta/not/fail1.css" */
+/* Ignore '@' rules that are not import */
+@keyframes move {
+    to { transform: translateX(100px);}
+}
+
+/* Only @imports that are strings are to be considered */
+@import 12345;
+
+/* Asset not found */
+.not-ok {
+    background-image: url('assets/404.png?ver=0.0.3');
 }

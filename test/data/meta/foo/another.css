@@ -1,3 +1,11 @@
 html {
     width: 100%;
 }
+
+.bkg {
+    background-image: url('assets/hey.png?ver=0.0.3#display-full');
+}
+
+.hash-only {
+    background-image: url('assets/hey.png#ver=0.0.3');
+}

@@ -187,10 +187,6 @@ function processImports(imports, cssDir, vendorDir) {
     return processCount;
 }
 
-function removeImportNode(node) {
-    node.splice(0, node.length);
-}
-
 // file should be /full/path/to/file.css
 module.exports = function (file, cssDir, vendorDir) {
     var cssImports = mapImports(file, [], true);
