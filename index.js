@@ -40,7 +40,7 @@ function mapImports(file, imports, isEntry) {
         imports.push(file);
     }
 
-    traverse(tree).forEach(function(node) {
+    traverse(tree).forEach(function (node) {
         var self = this;
         if (node !== 'atrules') {
             return;
@@ -77,13 +77,13 @@ function mapImports(file, imports, isEntry) {
 function processImports(imports, cssDir, vendorDir) {
     var fullSrc = '';
     var processCount = 0;
-    imports.forEach(function(file) {
+    imports.forEach(function (file) {
         var src = fs.readFileSync(file, 'utf8');
         var base = path.dirname(file);
         var tree = cssp.parse(src);
         var relativePath = path.relative(cssDir, file);
 
-        traverse(tree).forEach(function(node) {
+        traverse(tree).forEach(function (node) {
             var self = this;
 
             // Remove @import statements.
@@ -119,22 +119,41 @@ function processImports(imports, cssDir, vendorDir) {
                     var uriContainsH = uriFile.indexOf('#');
 
                     // URI does contains either '?' or '#'
-                    if(uriContainsQ !== -1 || uriContainsH !== -1) {
+                    if (uriContainsQ !== -1 || uriContainsH !== -1) {
 
-                        // Check if '?' occurs before '#'
-                        if(uriContainsQ > uriContainsH) {
-                            uriParts =  uriFile.split('?');
+                        // URI contains both '?' and '#'
+                        if (uriContainsQ !== -1 && uriContainsH !== -1) {
+                            // Check if '#' occurs before '?'
+                            if (uriContainsQ < uriContainsH) {
+                                uriParts = uriFile.split('?');
+                                uriFilePath = uriParts[0];
+
+                                if (uriParts.length > 1) {
+                                    uriQuery = '?' + uriParts.slice(1, uriParts.length + 1).join('');
+                                }
+                                // '#' occurs before '?'
+                            } else {
+                                uriParts = uriFile.split('#');
+                                uriFilePath = uriParts[0];
+
+                                if (uriParts.length > 1) {
+                                    uriQuery = '#' + uriParts.slice(1, uriParts.length + 1).join('');
+                                }
+                            }
+                        } else if (uriContainsQ !== -1) {
+                            //URI contains only '?
+                            uriParts = uriFile.split('?');
                             uriFilePath = uriParts[0];
 
-                            if(uriParts.length > 1) {
+                            if (uriParts.length > 1) {
                                 uriQuery = '?' + uriParts.slice(1, uriParts.length + 1).join('');
                             }
-                        // '#' occurs before '?'
                         } else {
-                            uriParts =  uriFile.split('#');
+                            //URI contains only '#'
+                            uriParts = uriFile.split('#');
                             uriFilePath = uriParts[0];
 
-                            if(uriParts.length > 1) {
+                            if (uriParts.length > 1) {
                                 uriQuery = '#' + uriParts.slice(1, uriParts.length + 1).join('');
                             }
                         }
@@ -152,7 +171,7 @@ function processImports(imports, cssDir, vendorDir) {
                             fse.copySync(copyFrom, copyTo);
 
                             var relativeUriPath = path.relative(cssDir, vendorDir) + '/' + flatUriPath + uriQuery;
-                            self.parent.node[1][1] = '"' + relativeUriPath + '"';
+                            self.parent.node[1][1] = '"./' + relativeUriPath + '"';
                         } else {
                             console.warn("!!WARN!! [css-assets]: A referenced resource was not found! ['" + uriFile + "' in " + file + "]");
                         }
@@ -173,7 +192,7 @@ function removeImportNode(node) {
 }
 
 // file should be /full/path/to/file.css
-module.exports = function(file, cssDir, vendorDir) {
+module.exports = function (file, cssDir, vendorDir) {
     var cssImports = mapImports(file, [], true);
     return processImports(cssImports, cssDir, vendorDir);
 };
